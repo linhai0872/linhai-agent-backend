@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: linhai-agent
+
+  profiles:
+    active: dev
+
+  ai:
+    dashscope:
+      api-key: # 填写你的阿里云百炼api-Key
+      chat:
+        options:
+          model: qwen-plus
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# springdoc-openapi
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.linhai.linhai_agent.controller
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# ?????????
+
+# 阿里云百炼api调用文档 https://bailian.console.aliyun.com/?tab=api#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2712195.html&renderType=iframe
