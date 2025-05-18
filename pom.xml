@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.8.16</version>
+			<version>5.8.24</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
@@ -58,15 +58,35 @@
 			<!-- 请将 'the-latest-version' 替换为最新版本号：https://mvnrepository.com/artifact/com.alibaba/dashscope-sdk-java -->
 			<version>2.20.0</version>
 		</dependency>
+		<!-- SpringAI Alibaba框架 https://java2ai.com/docs/1.0.0-M6.1/get-started/?spm=4347728f.13ae80de.0.0.3e46175cu9RtiR -->
 		<dependency>
 			<groupId>com.alibaba.cloud.ai</groupId>
 			<artifactId>spring-ai-alibaba-starter</artifactId>
 			<version>1.0.0-M6.1</version>
 		</dependency>
+		<!-- SpringAI Alibaba框架 ollama依赖 https://java2ai.com/docs/1.0.0-M6.1/models/ollama -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
+			<version>1.0.0-M6</version>
+		</dependency>
+		<!-- Langchain4j框架 https://docs.langchain4j.info/get-started -->
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-community-dashscope</artifactId>
-			<version>${latest version here}</version>
+			<version>1.0.0-alpha1</version>
+		</dependency>
+		<!-- 支持结构化输出 -->
+		<dependency>
+			<groupId>com.github.victools</groupId>
+			<artifactId>jsonschema-generator</artifactId>
+			<version>4.38.0</version>
+		</dependency>
+		<!-- 支持文件会话记忆持久化的序列化 -->
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+			<version>5.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

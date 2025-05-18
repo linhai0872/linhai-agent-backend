@@ -5,19 +5,24 @@ spring:
   profiles:
     active: dev
 
+# SpringAI配置 根据客户端名称 快速切换不同服务商提供的大模型服务
   ai:
     dashscope:
-      api-key: # 填写你的阿里云百炼api-Key
+      api-key: " " # todo 填写你的阿里云百炼api-Key https://dashscope.console.aliyun.com/apiKey
       chat:
         options:
           model: qwen-plus
+    ollama:
+      base-url: http://localhost:11434 # ollama模型本地启动默认api端口
+      chat:
+        model: qwen4:8b # 填写你自己的ollama运行模型名
 
 server:
   port: 8080
   servlet:
     context-path: /api
 
-# springdoc-openapi
+# swagger接口文档相关配置
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -29,12 +34,10 @@ springdoc:
     - group: 'default'
       paths-to-match: '/**'
       packages-to-scan: com.linhai.linhai_agent.controller
-# knife4j
+
+# knife4j增强接口文档相关配置
 knife4j:
   enable: true
   setting:
     language: zh_cn
 
-# ?????????
-
-# 阿里云百炼api调用文档 https://bailian.console.aliyun.com/?tab=api#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2712195.html&renderType=iframe

@@ -6,6 +6,10 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
+/**
+ * HTTP 方式调用 AI
+ * @see <a href="https://help.aliyun.com/zh/model-studio/use-qwen-by-calling-api#9141263b961cc">...</a>
+ */
 public class QwenHttpTest {
 
     private static final String API_URL = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";

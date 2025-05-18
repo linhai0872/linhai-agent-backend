@@ -13,8 +13,14 @@ import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.utils.JsonUtils;
 
+/**
+ * 阿里云灵积 SDK 方式调用 AI
+ * @see <a href="https://help.aliyun.com/zh/model-studio/use-qwen-by-calling-api#ab9194e9a55dk">...</a>
+ */
 public class QwenSDKTest {
+
     public static GenerationResult callWithMessage() throws ApiException, NoApiKeyException, InputRequiredException {
+
         Generation gen = new Generation();
         Message systemMsg = Message.builder()
                 .role(Role.SYSTEM.getValue())
