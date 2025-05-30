@@ -21,6 +21,7 @@ target/
 
 #resource
 src/main/resources/application.yml
+tmp
 
 ### NetBeans ###
 /nbproject/private/

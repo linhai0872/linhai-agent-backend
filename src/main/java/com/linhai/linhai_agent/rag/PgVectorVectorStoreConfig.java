@@ -30,7 +30,7 @@ public class PgVectorVectorStoreConfig {
                 .distanceType(COSINE_DISTANCE)       // Optional: defaults to COSINE_DISTANCE
                 .indexType(HNSW)                     // Optional: defaults to HNSW
                 .initializeSchema(true)              // Optional: defaults to false
-                .schemaName("\"linhai-ai-agent\"")                // Optional: defaults to "public"
+                .schemaName("\"linhai-ai-agent\"")   // Optional: defaults to "public"
                 .vectorTableName("vector_store")     // Optional: defaults to "vector_store"
                 .maxDocumentBatchSize(10000)         // Optional: defaults to 10000
                 .build();

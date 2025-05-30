@@ -16,13 +16,14 @@ spring:
       base-url: http://localhost:11434 # ollama模型本地启动默认api端口
       chat:
         model: qwen4:8b # 填写你自己的ollama运行模型名
+    # 阿里云 dashscope 向量存储配置
     vectorstore:
       pgvector:
         index-type: HNSW
         dimensions: 1536 # 按照你的embedding模型参数设置向量维度相关数据
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
-
+  # 填写你的阿里云 Postgresql 线上数据库地址
   datasource:
     url: jdbc:postgresql://填写你的pg数据库地址:5432/linhai-ai-agent
     username: linhai

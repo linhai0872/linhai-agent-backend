@@ -1,7 +1,9 @@
 package com.linhai.linhai_agent.app;
 
 import com.linhai.linhai_agent.advisor.MyLoggerAdvisor;
+import com.linhai.linhai_agent.advisor.ReReadingAdvisor;
 import com.linhai.linhai_agent.chatmemory.FileBasedChatMemory;
+import com.linhai.linhai_agent.rag.LoveAppRagCustomAdvisorFactory;
 import com.linhai.linhai_agent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
@@ -32,26 +35,32 @@ public class LoveApp {
             "恋爱状态询问沟通、习惯差异引发的矛盾；已婚状态询问家庭责任与亲属关系处理的问题。" +
             "引导用户详述事情经过、对方反应及自身想法，以便给出专属解决方案。";
 
+    /**
+     * 初始化 ChatClient
+     *
+     * @param dashscopeChatModel
+     */
     public LoveApp(ChatModel dashscopeChatModel) {
-
-        // 初始化基于文件的对话记忆
-        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
-        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
-
-
+//        // 初始化基于文件的对话记忆
+//        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
+//        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
         // 初始化基于内存的对话记忆
-//        ChatMemory chatMemory = new InMemoryChatMemory();
+        ChatMemory chatMemory = new InMemoryChatMemory();
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
-                        new MessageChatMemoryAdvisor(chatMemory)
+                        new MessageChatMemoryAdvisor(chatMemory),
+                        // 自定义日志 Advisor，可按需开启
+                        new MyLoggerAdvisor()
+//                        // 自定义推理增强 Advisor，可按需开启
+//                       ,new ReReadingAdvisor()
                 )
                 .build();
-
     }
 
     /**
      * AI 基础对话（支持多轮对话记忆）
+     *
      * @param message
      * @param chatId
      * @return
@@ -61,7 +70,7 @@ public class LoveApp {
                 .prompt()
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)) // 记忆对话轮数设定
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
@@ -69,13 +78,13 @@ public class LoveApp {
         return content;
     }
 
-    //JDK21新语法特性 快速定义类
     record LoveReport(String title, List<String> suggestions) {
 
     }
 
     /**
-     * AI 恋爱报告功能（结构化输出测试）
+     * AI 恋爱报告功能（实战结构化输出）
+     *
      * @param message
      * @param chatId
      * @return
@@ -144,4 +153,31 @@ public class LoveApp {
         return content;
     }
 
+    // AI 调用工具能力
+    @Resource
+    private ToolCallback[] allTools;
+
+
+    /**
+     * AI 恋爱报告功能（支持调用工具）
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithTools(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 开启日志，便于观察效果
+                .advisors(new MyLoggerAdvisor())
+                .tools(allTools)
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+    }
 }
